@@ -1,0 +1,6 @@
+{
+    "FaceSystemApiKey" : "NULL",
+    "FaceSystemUrl":"http://127.0.0.1",
+    "FaceSystemPort":"8000" ,
+    "FileSearchDir":"NULL"
+}
