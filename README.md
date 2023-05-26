@@ -67,3 +67,8 @@ TEMP_PATH = "temp"+str(os.sep)
 LIB_PATH = "lib"+str(os.sep)
 FULL_PATH_OF_TEMP = str(os.getcwd())+str(os.sep)+TEMP_PATH
 ```
+
+# İletişim:
+<B><h3><a href="https://t.me/BayTapsan">Telegram Adresim.</a></h3></B>
+
+<B><h3><a href="https://t.me/safaksiz_egitim">Telegram Eğitim kanalımız.</a></h3></B>
