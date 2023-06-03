@@ -1,6 +1,12 @@
 # Yüz Doğrulama
 <p>OSINT işlemlerinde kişileri doğrulamak & tespit edebilmek için tasalarnan bir python projesidir. Yüzleri karşılaştırmak için önceden eğitilmiş modeller kullanan face_recognition kütüphanesi, daha doğru eşleşmeler için resimleri yenien boyutlandırmada openCV ve kullanıcı dostu bir arayüz için Tkinter kullanılmaktadır.</p>
 
+<br>
+<br>
+<h3> <B>
+UYARI: Yanlızca linux üzerinde test edilmiştir diğer sistemler içinde uyumludur ama 
+ilgili python paketlerinin kurulumu vs uyumlu olmayabilir özellikle windows üzerinde dlib kurulumu.
+</B></h3>
 </br>
 
 
@@ -18,13 +24,24 @@
 </br>
 
 ### Gereksinimlerin kurulumu:
-```bash
-python3 -m pip install paket_adı # Linux & MacOS
-```
-```bash
-pip install paket_adı # Windows
-```
 
+```bash
+# Sistem çapında gerekli paketlerin kurulumu
+sudo apt-get install zenity git python3 
+
+# Python kütüpahanelerinin kurulması
+python3 -m pip install face_recognition cv2 tkinter subprocess pathlib
+
+# Reponun sisteme klonlanması
+git clone https://github.com/TheKoba-dev/FaceVerification.git
+
+# Kod klasörüne gidiş
+cd FaceVerification
+
+# Programın çalıştırılması
+python3 main.py
+
+```
 
 # Kullanıcı arayüzü:
 
@@ -72,3 +89,14 @@ FULL_PATH_OF_TEMP = str(os.getcwd())+str(os.sep)+TEMP_PATH
 <B><h3><a href="https://t.me/BayTapsan">Telegram Adresim.</a></h3></B>
 
 <B><h3><a href="https://t.me/safaksiz_egitim">Telegram Eğitim kanalımız.</a></h3></B>
+
+
+
+
+
+
+
+
+
+<!-- Prime osint project için yazılmıştır. [2020 - ~]. -->
+<!-- Destek olan tüm hanedan üyelerine selam olsun -->
