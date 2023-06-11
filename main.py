@@ -216,6 +216,7 @@ Yüz benzerliklerini hesaplamada bu kütüphane kullanılır %50+ benzerlik oran
 			
 			# Resimleri vs değişkenlere atandı 
             final_status = {}
+            
             target_img1 = cv2.imread(self.Face_1)
             target_img2 = cv2.imread(self.Face_2)
 			
@@ -226,9 +227,9 @@ Yüz benzerliklerini hesaplamada bu kütüphane kullanılır %50+ benzerlik oran
                 sn = ger_ssa+get_ims
 
             
-            # Doğru analiz için resimler 512x512 olarak yeniden boyutlandırıldı 
-            target_img1 = cv2.resize(target_img1, (512,512))
-            target_img2 = cv2.resize(target_img2, (512,512))
+            # Doğru analiz için resimler gri olarak yeniden ayarlandı. 
+            target_img1 = cv2.cvtColor(target_img1, cv2.COLOR_BGR2GRAY)
+            target_img2 = cv2.cvtColor(target_img2, cv2.COLOR_BGR2GRAY)
             
 			# face_ecognition un resimleri kullanabilmesi için temp altınsa kayıt isimleri
             rand_save_name1 = f"face_image_{str(random.randint(12,9999))}.jpg"
@@ -238,13 +239,15 @@ Yüz benzerliklerini hesaplamada bu kütüphane kullanılır %50+ benzerlik oran
             cv2.imwrite(TEMP_PATH+rand_save_name1,target_img1)
             cv2.imwrite(TEMP_PATH+rand_save_name2, target_img2)
             
+
             # Tanıma kütüphanesi için dosydan okunuyor tekrardan
+
             kisi_1 = face_recognition.load_image_file(TEMP_PATH+rand_save_name1)
             kisi_2 = face_recognition.load_image_file(TEMP_PATH+rand_save_name2)
 
 			# Resimler numpy array a çevriliyor 
-            kisi_1_encoded = face_recognition.face_encodings(kisi_1)[0]
-            kisi_2_encoded = face_recognition.face_encodings(kisi_2)[0]
+            kisi_1_encoded = face_recognition.face_encodings(kisi_1, model="cnn", num_jitters=4)[0]
+            kisi_2_encoded = face_recognition.face_encodings(kisi_2, model="cnn", num_jitters=4)[0]
 
             # saf benzerlik oranı hesaplaması 
             raw_benzerlik_oranı = face_recognition.face_distance([kisi_1_encoded], kisi_2_encoded)
@@ -261,7 +264,7 @@ Yüz benzerliklerini hesaplamada bu kütüphane kullanılır %50+ benzerlik oran
 
             for face_location in raw_face_landmarks1:
                 top, right, bottom, left = face_location
-                image_is1 = target_img1
+                image_is1 = cv2.imread(self.Face_1)
                 cv2.rectangle(image_is1, (left, top), (right, bottom), (0, 255, 0), 3)
                 rand_landmark_name1 = f"landmarks_{str(random.randint(1,9999))}.jpg"
                 
@@ -269,7 +272,7 @@ Yüz benzerliklerini hesaplamada bu kütüphane kullanılır %50+ benzerlik oran
 
             for face_location in raw_face_landmarks2:
                 top, right, bottom, left = face_location
-                image_is2 = target_img2
+                image_is2 = cv2.imread(self.Face_2)
                 cv2.rectangle(image_is2, (left, top), (right, bottom), (0, 255, 0), 3)
                 rand_landmark_name2 = f"landmarks_{str(random.randint(1,9999))}.jpg"            
 
@@ -289,7 +292,7 @@ Yüz benzerliklerini hesaplamada bu kütüphane kullanılır %50+ benzerlik oran
             final_status = {"success":True, "oran1":str(benzerlik_tam)}
 
 
-        except IndexError:
+        except IndexError as msg:
             final_status = {"success":False, "messagess":"Yüz bulunamadı."}
         
         except TypeError:
@@ -307,6 +310,6 @@ Yüz benzerliklerini hesaplamada bu kütüphane kullanılır %50+ benzerlik oran
             self.BilgiVerme["fg"] = "red"
 
 
-
-FaceVeriyApp = FaceVerifyKift(f"{APP_NAME} | {CORP_NAME}")
-FaceVeriyApp.mainloop()
+if __name__ == "__main__":
+    FaceVeriyApp = FaceVerifyKift(f"{APP_NAME} | {CORP_NAME}")
+    FaceVeriyApp.mainloop()
