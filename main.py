@@ -37,12 +37,59 @@ Bunların eğitim kalitesine bağlı olarak doğruluk oranı değişmektedir.
 
 """
 
+# SELECT YOUR USER LANG BRO
+USER_LANG = "TR"
+
 # KUTUPHANE VE TEMP DIZINLERI BELIRLENDI 
 CORP_NAME = "PRIME"
-APP_NAME = "Yüz doğrulama"
 TEMP_PATH = "temp"+str(os.sep)
 LIB_PATH = "lib"+str(os.sep)
 FULL_PATH_OF_TEMP = str(os.getcwd())+str(os.sep)+TEMP_PATH
+
+
+
+langPack_tr = {
+    "init_info":">> Karşılaştırılacak yüzleri seçiniz.",
+    "select_img" : "Resim seç",
+    "compre_faces": "Karşılaştır",
+    "external_info":"""-- Kullanım için notlar --
+Bu yazılım python face_recognition & openCV kütüphanesine dayanmaktadır.
+Yüz benzerliklerini hesaplamada bu kütüphane kullanılır %50+ benzerlik oranı yüksek ihtimalle aynı kişi demektir.
+""",
+    "msg_noface_found":"Yüz bulunamadı.",
+    "null_image_select":"Resim alanlarından birisi boş bırakıldı.",
+    "similarity_level":">>> Eşleştirme Oranı: ",
+    "err_msg2":">> Hata: "
+    }
+
+
+langPack_en = {
+    "init_info":">> Select the faces to compare.",
+    "select_img":"Choose image",
+    "compre_faces":"Compare",
+    "external_info":"""-- Notes for usage --
+This software is based on python face_recognition & openCV library.
+This library is used to calculate facial similarities. The 50%+ similarity rate means the same person with a high probability.
+""",
+    "msg_noface_found":"No faces found.",
+    "null_image_select":"One or two of the image fields is left blank.",
+    "similarity_level":">>> Match Rate: ",
+    "err_msg2":">> Error: ",
+    }
+
+
+
+if USER_LANG.upper() == "TR":
+    lang = langPack_tr
+    APP_NAME = "Yüz doğrulama"
+
+elif USER_LANG.upper() == "EN":
+    lang = langPack_en
+    APP_NAME = "Face verification"
+
+else:
+    lang = langPack_en
+    APP_NAME = "Face verification"
 
 
 # Baslangıcta düzenli olarak temp dizini kontrol ediliyor 
@@ -101,12 +148,12 @@ class FaceVerifyKift(tk.Tk):
         self.StandartColor = "#0a1e4a"
 
         # Bilgi verme kısmı tanımlandı 
-        self.BilgiVerme = tk.Label(text=">> Karşılaştırılacak yüzleri seçiniz.", font=self.StandartFonts, 
+        self.BilgiVerme = tk.Label(text=lang["init_info"], font=self.StandartFonts, 
                                    fg=self.StandartColor,)
         self.BilgiVerme.place(relx=0.01, rely=0.01)
 
         # 1.Resmin seçilmesi için gereken buton tenılandı 
-        Open_yüz_1 = ttk.Button(text="Resim seç", command=self.GüzelResimSecici__1)
+        Open_yüz_1 = ttk.Button(text=lang["select_img"], command=self.GüzelResimSecici__1)
         Open_yüz_1.place(relx=0.22, rely=0.1)
 
         # 1.Resim için ekranda gösterme alanı tanımlandı 
@@ -115,7 +162,7 @@ class FaceVerifyKift(tk.Tk):
 
 
         # 2.Resim için gereken buton tanımlandı
-        Open_yüz_2 = ttk.Button(text="Resim seç" ,command=self.GüzelResimSecici__2)
+        Open_yüz_2 = ttk.Button(text=lang["select_img"] ,command=self.GüzelResimSecici__2)
         Open_yüz_2.place(relx=0.62, rely=0.1)
 
         # 2.resmi ekrana eklemek için olan alan
@@ -124,13 +171,10 @@ class FaceVerifyKift(tk.Tk):
 
 
         # Yüzleri karşılaştırma butonu için olan alan
-        self.GetQueryFaces = ttk.Button(text="Karşılaştır", command=self.AnalayzTheFace)
+        self.GetQueryFaces = ttk.Button(text=lang["compre_faces"], command=self.AnalayzTheFace)
         self.GetQueryFaces.place(relx=0.01, rely=0.5)
 
-        self.EkBilgiler_data = """-- Kullanım için notlar --
-Bu yazılım python face_recognition & openCV kütüphanesine dayanmaktadır.
-Yüz benzerliklerini hesaplamada bu kütüphane kullanılır %50+ benzerlik oranı yüksek ihtimalle aynı kişi demektir.
-"""
+        self.EkBilgiler_data = lang["external_info"]
 
         self.AltBilgiPaneli = tk.Label(text=f"""Powered by {AppName}.\n\n{self.EkBilgiler_data} """, fg=self.StandartColor, justify="left")
         self.AltBilgiPaneli.place(relx=0.01, rely=0.6)
@@ -293,20 +337,20 @@ Yüz benzerliklerini hesaplamada bu kütüphane kullanılır %50+ benzerlik oran
 
 
         except IndexError as msg:
-            final_status = {"success":False, "messagess":"Yüz bulunamadı."}
+            final_status = {"success":False, "messagess":lang["msg_noface_found"]}
         
         except TypeError:
-            final_status = {"success":False, "messagess":"Resim alanlarından birisi boş bırakıldı."}
+            final_status = {"success":False, "messagess":lang["null_image_select"]}
 
 
         if final_status["success"] == True:
             benz = str(final_status["oran1"])
-            self.BilgiVerme["text"] = f">>> Eşleştirme Oranı: ___%{benz}___"
+            self.BilgiVerme["text"] = lang["similarity_level"]+f"%{benz}"
             self.BilgiVerme["fg"] = "green"
 
         else:
             err_msg = final_status["messagess"]
-            self.BilgiVerme["text"] = f">> Hata: {err_msg}"
+            self.BilgiVerme["text"] = lang["err_msg2"]+f"{err_msg}"
             self.BilgiVerme["fg"] = "red"
 
 
